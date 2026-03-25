@@ -2,12 +2,12 @@
 
 ## Project Purpose
 
-This workspace is a **COBOL modernisation toolkit** for analysing and documenting legacy mainframe programs from the Belgian social security / health insurance domain. The goal is to produce structured, stakeholder-ready documentation as input for modernisation projects.
+This workspace combines a **COBOL modernisation toolkit** with an in-progress **target application implementation**. It is used both for analysing/documenting legacy mainframe programs and for building migration outputs (Java backend + Angular frontend).
 
 ## Repository Structure
 
 ```
-TRBFNCX4/
+MYFIN/
   cbl/          COBOL source programs (.cbl)
   copy/         Copybooks (.cpy) — shared data structures
 
@@ -20,7 +20,18 @@ docs/           Generated documentation output (created by the pipeline)
   discovery/               Flow, component & domain-concept artifacts
   business/                Use cases, business processes
   technical/               Functional & technical specs
+
+migration/
+  backend/      Java Spring Boot backend (Maven)
+  frontend/     Angular frontend
+  contracts/    API contracts
+  checklists/   Delivery and validation checklists
 ```
+
+## Working Modes
+
+- **Documentation mode (legacy analysis):** use the autonomous multi-agent documentation pipeline and state tracking.
+- **Application mode (migration build):** implement and validate changes in `migration/backend` and `migration/frontend` directly, while keeping traceability with `migration/spec.md`, `migration/plan.md`, and `migration/tasks.md`.
 
 ## Autonomous Documentation Pipeline
 
@@ -39,7 +50,7 @@ The primary workflow is a **self-driving multi-agent pipeline** triggered by the
 
 ### How to Start
 
-Invoke the **Planning Agent** and provide the module name (e.g. `TRBFNCX4`). It will auto-detect the language, create `docs/[MODULE]-state.json`, divide the codebase into batches of 5–15 items, and hand off automatically.
+Invoke the **Planning Agent** and provide the module name (e.g. `MYFIN`). It will auto-detect the language, create `docs/[MODULE]-state.json`, divide the codebase into batches of 5–15 items, and hand off automatically.
 
 ### State File
 
@@ -57,7 +68,18 @@ Load the relevant SKILL.md before analysing code. Do **not** embed language-spec
 | VB.NET WinForms | [`.github/skills/vbnet-analysis/SKILL.md`](.github/skills/vbnet-analysis/SKILL.md) |
 | State tracking | [`.github/skills/state-management/SKILL.md`](.github/skills/state-management/SKILL.md) ← always load this |
 
-## COBOL Conventions (TRBFNCX4 Module)
+When working under `migration/backend`, prioritize Java analysis practices and build validation.
+When working under `migration/frontend`, prioritize TypeScript/Angular analysis practices and UI/API contract consistency.
+
+## Migration Application Conventions
+
+- Keep backend changes scoped to `migration/backend/src/main` unless the task explicitly requires build/config updates.
+- Keep frontend changes scoped to `migration/frontend/src` unless the task explicitly requires Angular workspace/config updates.
+- Treat `migration/contracts/*.md` as the API source of truth for endpoint payloads and naming.
+- Keep generated/runtime artifacts out of source control (`migration/backend/target`, `migration/backend/logs`, `migration/frontend/node_modules`, `migration/frontend/dist`, `migration/frontend/test-results`).
+- Preserve separation of concerns: business logic in backend services, UI state/interaction in frontend components/services.
+
+## COBOL Conventions (MYFIN Module)
 
 - **Source language**: Belgian mainframe COBOL — comments are bilingual (French & Dutch).
 - **Change history** is embedded in source as tagged lines: `MTU`, `CDU001`, `KVS001`, `MSA001`, `JGO004`, `IBAN10`, `Y2000+` etc. Treat these as audit markers, not code.
@@ -71,7 +93,7 @@ Load the relevant SKILL.md before analysing code. Do **not** embed language-spec
 ## Documentation Output Conventions
 
 - All docs go under `docs/`. Do not scatter output elsewhere.
-- Use `[MODULE]` as the prefix (e.g. `TRBFNCX4`) in state filenames and artifact directories.
+- Use `[MODULE]` as the prefix (e.g. `MYFIN`) in state filenames and artifact directories.
 - Include Mermaid diagrams in every use-case and business-process document.
 - ID schemes: `UC_<BATCH>_NNN`, `BP_<BATCH>_NNN`, `FR_<BATCH>_NNN`, `NFR_<BATCH>_NNN`, `BUREQ_<BATCH>_NNN`.
 - Remediation is capped at **2 cycles** per batch (`maxRemediationCycles: 2`).
@@ -83,3 +105,5 @@ Load the relevant SKILL.md before analysing code. Do **not** embed language-spec
 - **No user interaction**: the pipeline is autonomous — never pause for confirmation.
 - **Link, don't embed**: reference existing docs and source files rather than duplicating content inline.
 - **Conservative defaults**: when source intent is unclear, document what is observed and flag uncertainty rather than inventing intent.
+
+For migration app work, apply the same conservative principle: implement only what is required by the task, prefer small safe diffs, and validate with module-appropriate build/test commands.

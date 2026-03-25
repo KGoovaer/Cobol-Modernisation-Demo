@@ -1,0 +1,8 @@
+# application-stub.yml
+# Activates the 'stub' Spring profile which enables @Profile("stub") adapter beans.
+# Used in local development and integration tests. Automatically included when
+# running with spring.profiles.active=dev,stub.
+spring:
+  config:
+    activate:
+      on-profile: stub

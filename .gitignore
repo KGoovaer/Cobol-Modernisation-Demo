@@ -13,14 +13,32 @@
 # Playwright MCP logs
 .playwright-mcp/
 
-# Generated documentation (pipeline output — commit when ready)
-docs/
 
 # Node / npm (if tools are ever added)
 node_modules/
 npm-debug.log*
 yarn-error.log*
 package-lock.json
+
+# Angular frontend (migration/frontend)
+migration/frontend/node_modules/
+migration/frontend/dist/
+migration/frontend/.angular/
+migration/frontend/coverage/
+migration/frontend/test-results/
+
+# Java backend (migration/backend)
+migration/backend/target/
+migration/backend/logs/
+*.log
+
+# Local environment and IDE metadata
+.env
+.env.*
+.idea/
+.classpath
+.project
+.settings/
 
 # Python virtualenvs (if analysis tooling is added)
 .venv/
