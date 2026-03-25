@@ -1,0 +1,31 @@
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# VS Code
+.vscode/*
+!.vscode/settings.json
+!.vscode/extensions.json
+!.vscode/launch.json
+!.vscode/tasks.json
+
+# Playwright MCP logs
+.playwright-mcp/
+
+# Generated documentation (pipeline output — commit when ready)
+docs/
+
+# Node / npm (if tools are ever added)
+node_modules/
+npm-debug.log*
+yarn-error.log*
+package-lock.json
+
+# Python virtualenvs (if analysis tooling is added)
+.venv/
+__pycache__/
+*.pyc
+
+# OS temp files
+Thumbs.db
