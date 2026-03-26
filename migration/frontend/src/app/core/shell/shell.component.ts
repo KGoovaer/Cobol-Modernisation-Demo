@@ -25,7 +25,7 @@ import { AuthService } from '../../auth/auth.service';
   ],
   template: `
     <mat-toolbar color="primary">
-      <span>BETFIN – Payment Portal</span>
+      <span>MYFIN – Payment Portal</span>
       <span class="spacer"></span>
       @if (auth.hasAnyRole('SUBMITTER')) {
         <a mat-button routerLink="/payment" routerLinkActive="active-link">
